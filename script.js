@@ -94,11 +94,35 @@ btnStart.addEventListener("click", () => {
   btnNewGame.addEventListener("click", () => {
     clearInterval(start_time_interval);
     timer.textContent = '00:00:00';
-    mas();
+    let t = timer.textContent.split(':');
+    let hour = parseInt(t[0]);
+    let mins = parseInt(t[1]);
+    let secs = parseInt(t[2]);
+    let intervalID = setInterval(function() {
+      secs++;
+      if (secs.toString().length === 1) secs = '0' + secs;
+      if (mins.toString().length === 1) mins = '0' + mins;
+      if (hour.toString().length === 1) hour = '0' + hour;
+      timer.textContent = hour + ':' + mins + ':' + secs;
+      if (secs === 60) {
+        mins++;
+        secs = '00';
+      }
+      if (mins === 60) {
+        hour++;
+        mins = '00';
+      }
+    }, 1000);
+    const numbers = [...Array(15).keys()].sort(() => Math.random() - 0.5);
+    const elts = document.querySelectorAll(".cell");
+    for (let i = 0, lth= numbers.length; i < lth; i++) {
+      const currentNumber = numbers[i];
+      const currentElt = elts[i];
+     currentElt.innerHTML = currentNumber;
+      console.log(currentElt.innerHTML);
+    }
   });
 });
-
-
 
   const cellSize = 100;
   const empty = {
@@ -138,6 +162,7 @@ btnStart.addEventListener("click", () => {
   }
 function mas() {
   let numbers = [...Array(15).keys()].sort(() => Math.random() - 0.5);
+  console.log(numbers);
   for (let i = 1; i <= 15; i++) {
     const cell = document.createElement('div');
     const value = numbers[i - 1] + 1;
@@ -153,7 +178,6 @@ function mas() {
       top: top,
       element: cell
     });
-
     cell.style.left = `${left * cellSize}px`;
     cell.style.top = `${top * cellSize}px`;
 
